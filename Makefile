@@ -13,7 +13,8 @@ lfs:
 	GIT_LFS_LINK=https://github.com/github/git-lfs/releases/download/v${GIT_LFS_VERSION}/git-lfs-linux-amd64-${GIT_LFS_VERSION}.tar.gz
 	GIT_LFS="git-lfs-${GIT_LFS_VERSION}/git-lfs"
 	echo "downloading and untarring git-lfs binary" 
-	wget -qO- $GIT_LFS_LINK | tar xvz
+	wget $GIT_LFS_LINK
+	tar -xvzf git-lfs-*${GIT_LFS_VERSION}.tar.gz
 	echo "ls"
 	ls
 	echo "resetting travis remote"
