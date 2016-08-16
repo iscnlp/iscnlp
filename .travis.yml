@@ -16,14 +16,13 @@ addons:
 
 before_install:
   - pip install -U pip setuptools wheel
-  - git lfs install
-  - git lfs pull
 
 install:
   - travis_wait pip install -r requirements.txt
   - pip install -r test-requirements.txt
 
 script:
+  - make lfs
   - make travis
 
 after_success: coveralls
