@@ -241,4 +241,7 @@ class IndicTokenizer(BaseTokenizer):
             else:
                 text = self.splitsenir1.sub(r' \1\n\2', text)
                 text = self.splitsenir2.sub(r' \1 \2\n', text)
-        return text
+        if self.split_sen:
+            return [sen.split() for sen in text.split('\n')]
+        else:
+            return text.split()

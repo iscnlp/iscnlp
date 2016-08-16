@@ -3,10 +3,9 @@
 
 import io
 import os
-import six
 
 from testtools import TestCase
-from iscnlp.tokenizer import IndicTokenizer, RomanTokenizer, parse_args
+from iscnlp.tokenizer import Tokenizer, parse_args
 
 
 class TestTokenizer(TestCase):
@@ -17,15 +16,13 @@ class TestTokenizer(TestCase):
 
     def test_tokenizer(self):
         for lang in self.languages:
-            if lang == 'eng':
-                tok = RomanTokenizer(split_sen=True)
-            else:
-                tok = IndicTokenizer(split_sen=True, lang=lang)
+            tok = Tokenizer(split_sen=True, lang=lang)
             with io.open('%s/%s.txt' % (self.test_dir, lang),
                          encoding='utf-8') as fp:
                 for line in fp:
                     tokenized_text = tok.tokenize(line)
-                    self.assertIsInstance(tokenized_text, six.text_type)
+                    # Dummy Assertion
+                    self.assertIsInstance(tokenized_text, list)
 
     def test_parser(self):
         parser = parse_args(['--input', 'path/to/input_file',

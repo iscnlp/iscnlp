@@ -74,5 +74,7 @@ class RomanTokenizer(BaseTokenizer):
             text = self.splitsenr1.sub(r' \1\n\2', text)
             text = self.splitsenr2.sub(r' \1\n\2 \3', text)
             text = self.splitsenr3.sub(r' \1 \2\n\3', text)
-
-        return text
+        if self.split_sen:
+            return [sen.split() for sen in text.split('\n')]
+        else:
+            return text.split()

@@ -10,15 +10,12 @@ Copyright (c) 2015-2016 Irshad Ahmad
 <irshad.bhat@research.iiit.ac.in>
 """
 
-from __future__ import print_function
-
 import io
 import sys
 import codecs
 import argparse
 
-from .indic_tokenizer import IndicTokenizer
-from .roman_tokenizer import RomanTokenizer
+from .tokenizer import Tokenizer
 
 __version__ = '1.0'
 
@@ -91,14 +88,15 @@ def main():
     ifp, ofp = get_file_pointers(args)
 
     # initialize tokenizer
-    if args.lang == 'eng':
-        tok = RomanTokenizer(split_sen=args.split_sen)
-    else:
-        tok = IndicTokenizer(lang=args.lang, split_sen=args.split_sen)
+    tok = Tokenizer(lang=args.lang, split_sen=args.split_sen)
 
     # tokenize
     for line in ifp:
         line = tok.tokenize(line)
+        if args.split_sen:
+            line = '\n'.join([' '.join(sen) for sen in line])
+        else:
+            line = ' '.join(line)
         ofp.write('%s\n' % line)
 
     # close files
