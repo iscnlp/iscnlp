@@ -22,7 +22,7 @@ class WX():
 
     Examples
     --------
-    >>> from indictrans import WX
+    >>> from iscnlp._utils import WX
     >>> wxc = WX(lang='hin', order='utf2wx')
     >>> hin_utf = u'''बीजेपी के सांसद सुब्रमण्यम स्वामी ने कुछ ही दिन पहले
     ... अपनी ही सरकार को कठघरे में खड़ा करते हुए जीडीपी आंकड़ों पर
