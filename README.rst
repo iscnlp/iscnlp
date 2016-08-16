@@ -1,6 +1,10 @@
 iscnlp
 ======
 
+|travis| |coverage|
+
+----
+
 Natural Language tool-kit for Indian languages
 
 Install dependencies
@@ -89,4 +93,15 @@ Tokenizer can also be called from Command Line Interface.
     ['केजरीवाल', 'पर', 'प्रहार', 'करते', 'हुए', 'अखिलेश', 'ने', 'कहा', 'कि', 'जब', 'तक', 'पूरे', 'मामले', 'की', 'जांच', 'रिपोर्ट', 'जनता', 'के', 'सामने', 'नहीं', 'आ', 'जाती', ',', 'कोई', 'कैसे', 'कह', 'सकता', 'है', 'कि', 'जांच', 'निष्पक्ष', 'है', 'या', 'नहीं', '।']
     >>> tagger.tag(sequence)
     [('केजरीवाल', 'NNP'), ('पर', 'PSP'), ('प्रहार', 'NN'), ('करते', 'VM'), ('हुए', 'VAUX'), ('अखिलेश', 'NNP'), ('ने', 'PSP'), ('कहा', 'VM'), ('कि', 'CC'), ('जब', 'PRP'), ('तक', 'PSP'), ('पूरे', 'JJ'), ('मामले', 'NN'), ('की', 'PSP'), ('जांच', 'NNC'), ('रिपोर्ट', 'NN'), ('जनता', 'NN'), ('के', 'PSP'), ('सामने', 'NST'), ('नहीं', 'NEG'), ('आ', 'VM'), ('जाती', 'VAUX'), (',', 'SYM'), ('कोई', 'PRP'), ('कैसे', 'WQ'), ('कह', 'VM'), ('सकता', 'VAUX'), ('है', 'VAUX'), ('कि', 'CC'), ('जांच', 'NN'), ('निष्पक्ष', 'JJ'), ('है', 'VM'), ('या', 'CC'), ('नहीं', 'NEG'), ('।', 'SYM')]
-    
+   
+----
+
+|travis| |coverage|
+
+.. |travis| image:: https://travis-ci.org/iscnlp/iscnlp.svg?branch=master
+   :target: https://travis-ci.org/iscnlp/iscnlp
+   :alt: travis-ci build status
+
+.. |coverage| image:: https://coveralls.io/repos/github/iscnlp/iscnlp/badge.svg?branch=master 
+   :target: https://coveralls.io/github/iscnlp/iscnlp?branch=master
+   :alt: coveralls.io coverage status
