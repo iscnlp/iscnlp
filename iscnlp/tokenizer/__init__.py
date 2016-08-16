@@ -82,9 +82,7 @@ def get_file_pointers(args):
     return ifp, ofp
 
 
-def main():
-    # parse arguments
-    args = parse_args(sys.argv[1:])
+def process_args(args):
     ifp, ofp = get_file_pointers(args)
 
     # initialize tokenizer
@@ -102,3 +100,9 @@ def main():
     # close files
     ifp.close()
     ofp.close()
+
+
+def main():
+    # parse arguments
+    args = parse_args(sys.argv[1:])
+    process_args(args)
