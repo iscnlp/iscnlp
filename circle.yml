@@ -4,3 +4,8 @@ dependencies:
    - pip install -r requirements.txt
    - pip install -r test-requirements.txt
    - pyenv local 2.7.10 3.4.3 3.5.0
+   # Install git-lfs
+   - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+   - sudo apt-get install git-lfs=1.1.0
+   - ssh git@github.com git-lfs-authenticate iscnlp/iscnlp.git download
+   - git lfs pull
