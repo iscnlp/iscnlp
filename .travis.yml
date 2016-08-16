@@ -21,7 +21,8 @@ install:
   - pip install -r test-requirements.txt
 
 script:
-  - make lfs
+  - bash install_git_lfs.sh
+  - bash travis_conf_git_lfs.sh
   - make travis
 
 after_success: coveralls
