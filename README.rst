@@ -1,7 +1,7 @@
 iscnlp
 ======
 
-|travis| |coverage|
+|travis| |CircleCI| |coverage|
 
 ----
 
@@ -96,11 +96,14 @@ Tokenizer can also be called from Command Line Interface.
    
 ----
 
-|travis| |coverage|
+|travis| |CircleCI| |coverage|
 
 .. |travis| image:: https://travis-ci.org/iscnlp/iscnlp.svg?branch=master
    :target: https://travis-ci.org/iscnlp/iscnlp
    :alt: travis-ci build status
+
+.. |CircleCI| image:: https://circleci.com/gh/iscnlp/iscnlp.svg?style=svg
+    :target: https://circleci.com/gh/iscnlp/iscnlp
 
 .. |coverage| image:: https://coveralls.io/repos/github/iscnlp/iscnlp/badge.svg?branch=master 
    :target: https://coveralls.io/github/iscnlp/iscnlp?branch=master
