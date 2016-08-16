@@ -1,5 +1,8 @@
 #!/bin/bash
 
+GIT_LFS_VERSION="1.1.2"
+GIT_LFS="git-lfs-${GIT_LFS_VERSION}/git-lfs"
+
 echo "resetting travis remote"
 git remote set-url origin "https://github.com/iscnlp/iscnlp.git"
 
