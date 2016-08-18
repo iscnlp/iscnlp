@@ -16,20 +16,21 @@ MODEL_DIR = '%s/../iscnlp_data' % os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.abspath('%s/pos' % MODEL_DIR)
 
 
-class Tagger():
-    def __init__(self, lang='hin'):
+class Tagger(object):
+    def __init__(self, lang='hin', wx=False):
         self.lang = lang
         self.embd = TagEmbedder(lang=lang)
+        self.wxp = not wx and lang in ['hin']
         with open('%s/%s_pos.pkl' % (MODEL_DIR, lang), 'rb') as fp:
             if PV >= 3:
                 self.model = pickle.load(fp, encoding='latin1')
             else:
                 self.model = pickle.load(fp)
-        if lang in ['hin']:
+        if self.wxp:
             self.to_wx = WX(order='utf2wx', lang=lang).utf2wx
 
     def tag(self, sequence):
-        if self.lang in ['hin']:
+        if self.wxp:
             wx_sequence = list(map(self.to_wx, sequence))
             feat_vec = self.embd.get_feats(wx_sequence)
         else:
