@@ -51,8 +51,9 @@ class WX():
     വിപണിയിലെ ശുഭാപ്തിവിശ്വാസക്കാരായ കാളകള്ക്ക് അനുകൂലമായ
     രീതിയിലാണ് ബി എസ് ഇയില് വ്യാപാരം നടക്കുന്നത്.
     """
-    def __init__(self, order='utf2wx', lang='hin'):
+    def __init__(self, order='utf2wx', lang='hin', rmask=True):
         self.order = order
+        self.rmask = rmask
         self.lang_tag = lang.lower()
         self.fit()
 
@@ -1781,6 +1782,9 @@ class WX():
         self.u2i_on = re.compile("([\u0B5C\u0B5D\u0B5F])")
         self.u2i_bn = re.compile("([\u09DC\u09DD\u09DF])")
         self.u2i_pn = re.compile("([\u0A59-\u0A5B\u0A5E])")
+        # Handle Roman strings
+        self.mask_rom = re.compile(
+            r'([0-9%s]*[a-zA-Z][0-9a-zA-Z%s]*)' % ((self.punctuation,) * 2))
 
     def normalize(self, text):
         """Performs some common normalization, which includes:
@@ -2835,6 +2839,9 @@ class WX():
         unicode_ = self.mask_isc.sub(
             lambda m: self.iscii_num[
                 m.group(1)], unicode_)
+        # Mask Roman characters
+        if self.rmask:
+            unicode_ = self.mask_rom.sub(r'_\1_', unicode_)
         # Convert Unicode values to ISCII values
         iscii = self.unicode2iscii(unicode_)
         # Convert ISCII to WX-Roman
