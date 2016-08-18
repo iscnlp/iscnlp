@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# `load_wordvec` taken from `gensim.Word2Vec.load_word2vec_format`
+
 import os
 import re
 import sys
@@ -63,7 +65,7 @@ class WordVec():
         return self
 
 
-class TagEmbedder():
+class TagEmbedder(object):
     def __init__(self, window=2, lang='hin'):
         self.window = window
         self.indic = lang in ['hin']
@@ -105,6 +107,7 @@ class TagEmbedder():
             if self.indic:
                 cword = ' '.join(cword)
                 cword = re.sub(r' ([aVYZ])', r'\1', cword)
+                cword = cword.split()
             # current word suffix
             context.append(''.join(cword[-3:]))
             # current word prefix
