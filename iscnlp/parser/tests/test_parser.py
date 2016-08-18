@@ -3,9 +3,10 @@
 
 from __future__ import unicode_literals
 
+import os.path
 from testtools import TestCase
 
-from iscnlp import Parser
+from iscnlp.parser import Parser, parse_args, process_args
 
 TEST_FILE = """
 
@@ -31,6 +32,7 @@ class TestParser(TestCase):
     def setUp(self):
         super(TestParser, self).setUp()
         self.parser = Parser(lang='hin')
+        self.test_dir = os.path.dirname(os.path.abspath(__file__))
 
     def test_parser(self):
         seq = TEST_FILE.strip().split('\n')
@@ -40,3 +42,16 @@ class TestParser(TestCase):
         # test beam parser
         self.parser.beamwidth = 2
         self.parser.parse(word_seq)
+
+    def test_argparser(self):
+        # test parser arguments
+        parser = parse_args(['--input', 'path/to/input_file',
+                             '--output', 'path/to/output_file',
+                             '--language', 'hin'])
+        self.assertEqual(parser.infile, 'path/to/input_file')
+        self.assertEqual(parser.outfile, 'path/to/output_file')
+        self.assertEqual(parser.lang, 'hin')
+        # test parser args processing
+        process_args(parse_args(['-i', '%s/hin.txt' % self.test_dir,
+                                 '-o', '/tmp/test.out',
+                                 '-l', 'hin']))
