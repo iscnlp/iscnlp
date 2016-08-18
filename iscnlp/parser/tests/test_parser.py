@@ -35,4 +35,8 @@ class TestParser(TestCase):
     def test_parser(self):
         seq = TEST_FILE.strip().split('\n')
         word_seq = [x.split('\t')[1] for x in seq]
+        # test static parser
+        self.parser.parse(word_seq)
+        # test beam parser
+        self.parser.beamwidth = 2
         self.parser.parse(word_seq)
