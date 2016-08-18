@@ -17,11 +17,12 @@ import argparse
 
 from .tokenizer import Tokenizer
 
+__all__ = ['Tokenizer']
 __version__ = '1.0'
 
 
 def parse_args(args):
-    prog = 'Indic-Tokenizer'
+    prog = 'isc-tokenizer'
     description = 'Tokenizer for Indian Scripts'
     languages = '''hin urd ben asm guj mal pan tel tam kan ori mar
                 nep bod kok kas eng'''.split()
