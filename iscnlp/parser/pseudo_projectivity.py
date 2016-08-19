@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
 import numpy as np
 
 """
@@ -9,16 +8,6 @@ Implementation of tree transformation algorithms for handling non-projective
 trees in transition based systems. The procedure is defined in Joakim Nivre
 and Jens Nilsson, ACL 2005. http://stp.lingfil.uu.se/~nivre/docs/acl05.pdf
 """
-
-
-def get_projection(node, adj_mat):
-    children = []
-    if not len(np.nonzero(adj_mat[node])[0]):
-        return children
-    for c in np.nonzero(adj_mat[node])[0]:
-        children += get_projection(c, adj_mat)
-        children.append(c + 1)
-    return children
 
 
 def adjacency_matrix(nodes):
@@ -31,55 +20,6 @@ def adjacency_matrix(nodes):
         parent = node.parent - 1
         adj_mat[parent, child] = 1
     return adj_mat
-
-
-def non_projectivity(nodes, tree=None):
-    """Extracts non-projective arcs from a given tree, if any."""
-    np_arcs = set()
-    for leaf in sorted(nodes):
-        # no node can interfer in the root to dummy root arc.
-        if leaf.parent == 0:
-            continue
-        head, dependent = leaf.parent, leaf.id
-        projection = set(get_projection(head - 1, tree))
-        if head < dependent:
-            hd = range(head + 1, dependent)
-        else:
-            hd = range(dependent + 1, head)
-        for inter in hd:
-            hd_flag = head < inter < dependent or head > inter > dependent
-            if hd_flag and inter in projection:
-                continue
-            else:
-                np_arcs.add((dependent, head, abs(dependent - head)))
-    return np_arcs
-
-
-def projectivize(nodes):
-    """PseudoProjectivisation: Lift non-projective arcs by moving their head
-    upwards one step at a time.
-    """
-    tree = adjacency_matrix(nodes)
-    # sort np arcs by distance.
-    non_projective_arcs = sorted(non_projectivity(nodes, tree),
-                                 key=lambda x: x[-1])
-    while non_projective_arcs:
-        dependent, head, distance = non_projective_arcs.pop(0)
-        np_dep_node = nodes[dependent - 1]
-        np_head_node = nodes[head - 1]  # syntactic_head
-        if np_dep_node.visit:
-            modified_drel = np_dep_node.drel
-        else:
-            modified_drel = re.sub(r"([%$])", r'|%s\1' % (np_head_node.pdrel),
-                                   np_dep_node.drel)
-        nodes[np_dep_node.id - 1] = nodes[np_dep_node.id - 1]._replace(
-            drel=modified_drel, parent=np_head_node.parent, visit=True)
-        nodes[np_head_node.id - 1] = nodes[np_head_node.id - 1]._replace(
-            drel=re.sub(r"[%]*$", r'%', np_head_node.drel))
-        tree = adjacency_matrix(nodes)
-        non_projective_arcs = sorted(non_projectivity(nodes, tree),
-                                     key=lambda x: x[-1])
-    return [node._replace(pparent=-1, pdrel='__PAD__') for node in nodes]
 
 
 def ul_parent(nodes, stack, lin_head_lbl):
