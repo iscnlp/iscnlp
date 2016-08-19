@@ -29,18 +29,6 @@ class Configuration:
         self.nodes = nodes
 
 
-class BeamItem:
-
-    def __init__(self, number, score, action, label):
-        self.number = number
-        self.score = score
-        self.action = action
-        self.label = label
-
-    def __cmp__(self, next_beam_item):
-        return cmp(self.score, next_beam_item.score)
-
-
 class Parser(ArcEager):
 
     def __init__(self, beamwidth=1, lang='hin'):
@@ -82,11 +70,7 @@ class Parser(ArcEager):
                     next_transition = valid_trans[self.transitions[action]]
                     heapq.heappush(
                         beam_items,
-                        BeamItem(
-                            b,
-                            prevScore + score,
-                            next_transition,
-                            label))
+                        (prevScore + score, b, next_transition, label))
                     if len(beam_items) > self.beamwidth:
                         heapq.heappop(beam_items)
         return beam_items
@@ -139,10 +123,10 @@ class Parser(ArcEager):
             new_beam = []
             beam_items = self.create_beam_items(beam)
             for b_item in beam_items:
-                b = b_item.number
-                score = b_item.score
-                label = b_item.label
-                action = b_item.action
+                b = b_item[1]  # beam-item number
+                score = b_item[0]  # beam-item score
+                label = b_item[3]  # beam-item label
+                action = b_item[2]  # beam-item action
                 current_config = beam[b]
                 new_config = self.clone(current_config)
                 action(new_config, label)
