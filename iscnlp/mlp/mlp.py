@@ -26,7 +26,8 @@ class MultiLayerPerceptron():
         """Forward pass through the network"""
         x_hidden[:] = np.dot(x, self.w1)
         x_hidden += self.b1
-        x_hidden = np.maximum(x_hidden, 0)
+        # apply RelU activation
+        np.maximum(x_hidden, 0, x_hidden)
         x_output[:] = np.dot(x_hidden, self.w2)
         x_output += self.b2
         self.softmax(x_output)
