@@ -24,7 +24,7 @@ __version__ = '1.0'
 def parse_args(args):
     prog = 'isc-tagger'
     description = 'POS-Tagger for Indian Languages'
-    languages = 'hin'.split()
+    languages = 'hin urd'.split()
     lang_help = 'select language (3 letter ISO-639 code) {%s}' % (
                 ', '.join(languages))
     # parse command line arguments
@@ -82,7 +82,7 @@ def process_args(args):
     # initialize tagger
     tagger = Tagger(lang=args.lang)
 
-    # parse
+    # tag
     for line in ifp:
         line = line.split()
         wtags = tagger.tag(line)
