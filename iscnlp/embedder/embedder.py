@@ -102,8 +102,8 @@ class TagEmbedder(object):
         for i in range(self.window, len(vec) - self.window):
             cword = vec[i]  # current word
             # current word with its context
-            context = vec[i - self.window: i] + [cword] +\
-                vec[i + 1: i + (self.window + 1)]
+            context = vec[i - self.window: i] + [cword] + vec[
+                i + 1: i + (self.window + 1)]
             if self.indic:
                 cword = ' '.join(cword)
                 cword = re.sub(r' ([aVYZ])', r'\1', cword)

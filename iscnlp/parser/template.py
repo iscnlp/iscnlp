@@ -22,7 +22,8 @@ class Template(Tagger):
         self.PAD = node(-1, '__PAD__', '__PAD__', '__PAD__', '__PAD__',
                         defaultdict(lambda: '__PAD__'), -1, -1, '__PAD__',
                         '__PAD__', [], [])
-        self.pvm = WordVec().load_wordvec('%s/hin_pos.vec' % MODEL_DIR)
+        self.pvm = WordVec().load_wordvec('%s/%s_pos.vec' % (MODEL_DIR, lang))
+        self._indic = lang in ['hin']
 
     def _safe_indexing(self, list_, id_):
         try:
@@ -95,10 +96,13 @@ class Template(Tagger):
                 vec.extend(self.embd.wvm.syn0[-1]*.01)
         # suffixes
         for word in (s0r.form, s0l.form, n0l.form, s0.form, n0.form):
-            word = ' '.join(word)
-            word = re.sub(r' ([aVYZ])', r'a', word)
-            word = word.split()
-            sfx = ''.join(word[-3:])
+            if self._indic:
+                word = ' '.join(word)
+                word = re.sub(r' ([aVYZ])', r'\1', word)
+                word = word.split()
+                sfx = ''.join(word[-3:])
+            else:
+                sfx = word[-3:]
             if sfx in self.embd.c3vm.vocab:
                 vec.extend(self.embd.c3vm[sfx])
             else:

@@ -25,7 +25,7 @@ __version__ = '1.0'
 def parse_args(args):
     prog = 'isc-parser'
     description = 'Parser for Indian Languages'
-    languages = 'hin'.split()
+    languages = 'hin urd'.split()
     lang_help = 'select language (3 letter ISO-639 code) {%s}' % (
                 ', '.join(languages))
     # parse command line arguments
