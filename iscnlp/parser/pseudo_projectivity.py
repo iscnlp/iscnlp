@@ -14,10 +14,10 @@ def adjacency_matrix(nodes):
     """Builds an adjacency matrix of a dependency graph"""
     adj_mat = np.zeros((len(nodes),) * 2, int)
     for node in nodes:
-        if node.parent == 0:
+        if node.pparent == 0:
             continue
         child = node.id - 1
-        parent = node.parent - 1
+        parent = node.pparent - 1
         adj_mat[parent, child] = 1
     return adj_mat
 
