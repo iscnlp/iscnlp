@@ -108,7 +108,7 @@ POS text files directly from Command Line Interface. It is highly recommended to
       -v, --version     show program's version number and exit
       -i , --input      <input-file>
       -o , --output     <output-file>
-      -l , --language   select language (3 letter ISO-639 code) {hin}
+      -l , --language   select language (3 letter ISO-639 code) {hin, urd}
 
 3. Parser
 ---------
@@ -154,7 +154,7 @@ Parse raw-text files directly from Command Line Interface. It is highly recommen
       -v, --version     show program's version number and exit
       -i , --input      <input-file>
       -o , --output     <output-file>
-      -l , --language   select language (3 letter ISO-639 code) {hin}
+      -l , --language   select language (3 letter ISO-639 code) {hin, urd}
 
 ----
 
