@@ -23,9 +23,9 @@ MODEL_DIR = os.path.abspath('%s/parse' % MODEL_DIR)
 class Configuration:
 
     def __init__(self, nodes=[]):
-        self.b0 = 1
         self.stack = []
         self.score = 0.0
+        self.b0 = 1
         self.nodes = nodes
 
 
@@ -60,7 +60,8 @@ class Parser(ArcEager):
             config = beam[b]
             prevScore = config.score
             dense_feats = self.template.feat_template(config.nodes,
-                                                      config.stack, config.b0)
+                                                      config.stack,
+                                                      config.b0)
             pr_scores = self.clf.predict_proba(dense_feats)[0]
             pr_scores = np.log(pr_scores)
             predictions = zip(pr_scores, self.clf.classes_)
@@ -135,7 +136,7 @@ class Parser(ArcEager):
             beam = new_beam
         return max(beam, key=lambda b: b.score).nodes
 
-    def depenency_graph(self, tokens):
+    def dependency_graph(self, tokens):
         leaf = namedtuple('leaf', ['id', 'form', 'lemma', 'ctag', 'tag',
                                    'features', 'parent', 'pparent', 'drel',
                                    'pdrel', 'left', 'right'])
@@ -155,9 +156,9 @@ class Parser(ArcEager):
     def parse(self, sequence):
         if self.wxp:
             wx_sequence = list(map(self._to_wx, sequence))
-            nodes = list(self.depenency_graph(wx_sequence))
+            nodes = list(self.dependency_graph(wx_sequence))
         else:
-            nodes = list(self.depenency_graph(sequence))
+            nodes = list(self.dependency_graph(sequence))
         if self.beamwidth > 1:
             nodes = self.beam_parse(nodes)
         else:
