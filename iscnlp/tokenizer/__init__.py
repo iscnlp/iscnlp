@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 """Tokenizer for Indian scripts and Roman script.
 
 This module provides a complete tokenizer for Indian languages
@@ -66,7 +68,7 @@ def parse_args(args):
 
 def get_file_pointers(args):
     if args.infile:
-        ifp = io.open(args.infile, encoding='utf-8')
+        ifp = io.open(args.infile, encoding='utf-8', errors='replace')
     else:
         if sys.version_info[0] >= 3:
             ifp = codecs.getreader('utf8')(sys.stdin.buffer)
