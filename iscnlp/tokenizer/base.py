@@ -92,7 +92,9 @@ class BaseTokenizer(object):
                 text[i] = 'eMoTiCoN-%d' % n_e
                 self.emos_dict[n_e] = token
                 n_e += 1
-            elif token.startswith('http://') or token.startswith('www.'):
+            elif (token.startswith('http://') or
+                  token.startswith('https://') or
+                  token.startswith('www.')):
                 text[i] = 'sItEuRl-%d' % n_u
                 self.url_dict[n_u] = token
                 n_u += 1
