@@ -6,14 +6,11 @@ GIT_LFS="git-lfs-${GIT_LFS_VERSION}/git-lfs"
 echo "downloading and untarring git-lfs binary" 
 wget -qO- $GIT_LFS_LINK | tar xvz
 
-echo "resetting remote"
+echo "resetting travis remote"
 git remote set-url origin "https://github.com/iscnlp/iscnlp.git"
 
 echo "git lfs install"
 GIT_TRACE=1 $GIT_LFS install
 
-echo "fetch"
-GIT_TRACE=1 $GIT_LFS fetch
-
-echo "checkout"
-GIT_TRACE=1 $GIT_LFS checkout
+echo "git pull"
+GIT_TRACE=1 $GIT_LFS pull
