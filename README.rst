@@ -17,24 +17,26 @@ Install dependencies
 Before Install
 ^^^^^^^^^^^^^^
 
-`iscnlp <https://github.com/iscnlp/iscnlp>`_ contains large files which are managed through `git-lfs`_. Git-Lfs replaces large files with text pointers inside Git, while storing the file contents on a remote server. To convert these text pointers back to actual files `git-lfs`_ should be installed. Run the below command to install `git-lfs`_.
+`iscnlp <https://github.com/iscnlp/iscnlp>`_ contains large files which are managed through `git-lfs`_. Git-Lfs replaces large files with text pointers inside Git, while storing the file contents on a remote server. To convert these text pointers back to actual files `git-lfs`_ should be installed.
 
+Run the below commands to install `git-lfs`_.
 .. _`git-lfs`: https://git-lfs.github.com
 
 ::
 
-    bash install_git_lfs.sh
+    - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+    - sudo apt-get install git-lfs
 
 Install
 ^^^^^^^
 
 ::
 
-    git clone https://github.com/iscnlp/iscnlp.git
-    cd iscnlp
-    git lfs install
-    git lfs pull
-    sudo python setup.py install
+    - git clone https://github.com/iscnlp/iscnlp.git
+    - cd iscnlp
+    - git lfs install
+    - git lfs pull
+    - sudo python setup.py install
 
 1. Tokenizer:
 -------------
