@@ -44,7 +44,7 @@ Install
 
     >>> from __future__ import unicode_literals
     >>> from iscnlp import Tokenizer
-    >>> tok = Tokenizer(lang='eng', tweets=True)
+    >>> tk = Tokenizer(lang='eng', tweets=True)
     >>> text = "RT @BJP_RSS Crack down on Black money.India slides to 75th slot on Swiss bank money list #ModiForeignAchievements @RituRathaur https://t.c…"
     >>> tk.tokenize(text)
     ['RT', '@BJP_RSS', 'Crack', 'down', 'on', 'Black', 'money', '.', 'India', 'slides', 'to', '75th', 'slot', 'on', 'Swiss', 'bank', 'money', 'list', '#ModiForeignAchievements', '@RituRathaur', 'https://t.c…']
