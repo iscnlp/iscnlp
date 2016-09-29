@@ -9,7 +9,7 @@ from .base import BaseTokenizer
 
 
 class IndicTokenizer(BaseTokenizer):
-    def __init__(self, lang='hin', split_sen=False):
+    def __init__(self, lang='hin', split_sen=False, tweets=False):
         super(IndicTokenizer, self).__init__(split_sen)
         self.lang = lang
         self.urd = lang in ['urd', 'kas']
@@ -17,6 +17,7 @@ class IndicTokenizer(BaseTokenizer):
             self.lang = 'ben'
         if lang in ["mar", "nep", "bod", "kok"]:
             self.lang = 'hin'
+        self.tw = tweets
         # precompile regexes
         self.fit()
 
@@ -43,11 +44,11 @@ class IndicTokenizer(BaseTokenizer):
         # split sentences
         if self.urd:
             self.splitsenur1 = re.compile(
-                ' ([.?\u06d4]) '
+                ' ([.?\u06d4\u061f]) '
                 '([\u0617-\u061a\u0620-\u065f\u066e-\u06d3'
                 '\u06d5\u06fa-\u06ffA-Z\(\{\[<])')
             self.splitsenur2 = re.compile(
-                ' ([.?\u06d4]) ([\)\}\]\'"> ]+) ')
+                ' ([.?\u06d4\u061f]) ([\)\}\]\'"> ]+) ')
         else:
             self.splitsenir1 = re.compile(
                 ' ([|.?\u0964\u0965]) ([\u0900-\u0d7fA-Z\(\{\[<])')
@@ -109,11 +110,18 @@ class IndicTokenizer(BaseTokenizer):
         return text
 
     def tokenize(self, text):
-        # mask emoticons and urls
-        text = self.mask_emos_urls(text)
         # normalize unicode punctituation
         text = self.normalize_punkt(text)
         text = self.normalize_punkt_ext(text)
+        # mask emoticons and urls
+        text = self.mask_emos_urls(text)
+        # mask #tags and @ddresses
+        if self.tw:
+            text = self.mask_htag_uref(text)
+        # mask splitted contractions
+        text = self.mask_sp_contractions(text)
+        # split supplementary unicode
+        text = self.bigu.sub(r' \1 ', text)
         # universal tokenization
         text = self.base_tokenize(text)
         if self.urd:
@@ -170,11 +178,11 @@ class IndicTokenizer(BaseTokenizer):
             text = re.sub('( \u06d4)([\u0600-\u06ff])', r'\1 \2', text)
             # seperate out Urdu comma i.e., "،" except for Urdu digits
             text = re.sub(
-                '([^0-9\u0660-\u0669\u06f0-\u06f9])(\u060C)',
+                '([^0-9٠-٩۰-۹])(\u060C)',
                 r'\1 \2 ',
                 text)
             text = re.sub(
-                '(\u060C)([^0-9\u0660-\u0669\u06f0-\u06f9])',
+                '(\u060C)([^0-9٠-٩۰-۹])',
                 r' \1 \2',
                 text)
             # separate out on Urdu letters followed by non-Urdu letters
@@ -203,17 +211,19 @@ class IndicTokenizer(BaseTokenizer):
                 text)
             # separate out hyphens
             text = re.sub(
-                '(-?[0-9\u0660-\u0669\u06f0-\u06f9]-+'
-                '[0-9\u0660-\u0669\u06f0-\u06f9]-?){,}',
+                '(-?[0-9٠-٩۰-۹]-+'
+                '[0-9٠-٩۰-۹]-?){,}',
                 lambda m: r'%s' % (m.group().replace('-', ' - ')),
                 text)
             text = re.sub(
-                '(.)-([^a-zA-Z\u0617-\u061a\u0620-\u065f\u066e-\u06d3'
+                '(.)-([^0-9٠-٩۰-۹a-zA-Z'
+                '\u0617-\u061a\u0620-\u065f\u066e-\u06d3'
                 '\u06d5\u06fa-\u06ff\ufe70-\ufeff\ufb50-\ufdff])',
                 r'\1 - \2',
                 text)
             text = re.sub(
-                '([^a-zA-Z\u0617-\u061a\u0620-\u065f\u066e-\u06d3\u06d5'
+                '([^0-9٠-٩۰-۹a-zA-Z'
+                '\u0617-\u061a\u0620-\u065f\u066e-\u06d3\u06d5'
                 '\u06fa-\u06ff\ufe70-\ufeff\ufb50-\ufdff])-(.)',
                 r'\1 - \2',
                 text)
@@ -233,6 +243,11 @@ class IndicTokenizer(BaseTokenizer):
                 '\u0965' * int((len(m.group(2))) / 4)), text)
         # unmask emoticons and urls
         text = self.unmask_emos_urls(text)
+        # unmask splitted contractions
+        text = self.unmask_sp_contractions(text)
+        # unmask #tags and @ddress
+        if self.tw and self._ht_at:
+            text = self.unmask_htag_uref(text)
         # split sentences
         if self.split_sen:
             if self.urd:
