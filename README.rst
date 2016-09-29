@@ -17,9 +17,8 @@ Install dependencies
 Before Install
 ^^^^^^^^^^^^^^
 
-`iscnlp <https://github.com/iscnlp/iscnlp>`_ contains large files which are managed through `git-lfs`_. Git-Lfs replaces large files with text pointers inside Git, while storing the file contents on a remote server. To convert these text pointers back to actual files `git-lfs`_ should be installed.
+`iscnlp <https://github.com/iscnlp/iscnlp>`_ contains large files which are managed through `git-lfs`_. Git-Lfs replaces large files with text pointers inside Git, while storing the file contents on a remote server. To convert these text pointers back to actual files `git-lfs`_ should be installed. Run the below commands to install `git-lfs`_.
 
-Run the below commands to install `git-lfs`_.
 .. _`git-lfs`: https://git-lfs.github.com
 
 ::
