@@ -3,14 +3,21 @@
 
 from __future__ import (division, unicode_literals)
 
+import os
 import re
 
 from .base import BaseTokenizer
 
 
 class RomanTokenizer(BaseTokenizer):
-    def __init__(self, split_sen=False):
+    def __init__(self, lang='eng', split_sen=False, tweets=False):
         super(RomanTokenizer, self).__init__(split_sen)
+        self.tw = tweets
+        self.lang = lang
+        if self.lang == 'spa':
+            file_path = os.path.dirname(os.path.abspath(__file__))
+            with open('%s/data/NONBREAKING_PREFIXES.ES' % file_path) as fp:
+                self.NBP = self.NBP | set(fp.read().split())
         # precompile regexes
         self.fit()
 
@@ -28,16 +35,31 @@ class RomanTokenizer(BaseTokenizer):
         self.noalnum_hyp_ch = re.compile('([^a-zA-Z0-9])-(.)')
         # split sentences
         if self.split_sen:
-            self.splitsenr1 = re.compile(' ([.?]) ([A-Z])')
-            self.splitsenr2 = re.compile(' ([.?]) ([\'"\(\{\[< ]+) ([A-Z])')
+            spa_ch = ''
+            if self.lang == 'spa':
+                spa_ch = '\xc0-\xd6\xd8-\xde'
+            self.splitsenr1 = re.compile(' ([.?]) ([A-Z%s])' % spa_ch)
+            self.splitsenr2 = re.compile(' ([.?]) ([\'"\(\{\[< ]+) ([A-Z%s])' % spa_ch)
             self.splitsenr3 = re.compile(
-                ' ([.?]) ([\'"\)\}\]> ]+) ([A-Z])')
+                ' ([.?]) ([\'"\)\}\]> ]+) ([A-Z%s])' % spa_ch)
+        # split Latin lettrs followed by non-Latin letters and vice-versa
+        self.nonltn_ltn = re.compile('([^\u0000-\u024f])([\u0000-\u024f])')
+        self.ltn_nonltn = re.compile('([\u0000-\u024f])([^\u0000-\u024f])')
 
     def tokenize(self, text):
-        # unmask emoticons and urls
-        text = self.mask_emos_urls(text)
         # normalize unicode punctituation
         text = self.normalize_punkt(text)
+        # mask emoticons and urls
+        text = self.mask_emos_urls(text)
+        # mask #tags and @ddresses
+        if self.tw:
+            text = self.mask_htag_uref(text)
+        # mask splitted contractions
+        text = self.mask_sp_contractions(text)
+        text = self.nonltn_ltn.sub(r'\1 \2', text)
+        text = self.ltn_nonltn.sub(r'\1 \2', text)
+        # split supplementary unicode
+        text = self.bigu.sub(r' \1 ', text)
         # universal tokenization
         text = self.base_tokenize(text)
         # seperate "," outside
@@ -69,6 +91,11 @@ class RomanTokenizer(BaseTokenizer):
                                     text)
         # unmask emoticons and urls
         text = self.unmask_emos_urls(text)
+        # unmask splitted contractions
+        text = self.unmask_sp_contractions(text)
+        # unmask #tags and @ddress
+        if self.tw and self._ht_at:
+            text = self.unmask_htag_uref(text)
         # split sentences
         if self.split_sen:
             text = self.splitsenr1.sub(r' \1\n\2', text)
