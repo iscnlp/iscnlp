@@ -39,7 +39,8 @@ class RomanTokenizer(BaseTokenizer):
             if self.lang == 'spa':
                 spa_ch = '\xc0-\xd6\xd8-\xde'
             self.splitsenr1 = re.compile(' ([.?]) ([A-Z%s])' % spa_ch)
-            self.splitsenr2 = re.compile(' ([.?]) ([\'"\(\{\[< ]+) ([A-Z%s])' % spa_ch)
+            self.splitsenr2 = re.compile(' ([.?]) ([\'"\(\{\[< ]+) '
+                                         '([A-Z%s])' % spa_ch)
             self.splitsenr3 = re.compile(
                 ' ([.?]) ([\'"\)\}\]> ]+) ([A-Z%s])' % spa_ch)
         # split Latin lettrs followed by non-Latin letters and vice-versa

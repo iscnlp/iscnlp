@@ -9,6 +9,7 @@ import string
 
 
 class BaseTokenizer(object):
+
     def __init__(self, split_sen=False):
         self.split_sen = split_sen
         file_path = os.path.dirname(os.path.abspath(__file__))
@@ -26,7 +27,7 @@ class BaseTokenizer(object):
         self.contractions = """ 'all 'am 'clock 'd 'll 'm n't
                             're 's 'sup 'tis 'twas 've 'n' """
         self.contractions = self.contractions.split() +\
-                            self.contractions.upper().split()
+            self.contractions.upper().split()
         # precompile regexes
         self.base_fit()
 
@@ -73,7 +74,8 @@ class BaseTokenizer(object):
             # UCS-2 build
             self.bigu = re.compile(u'(([\uD800-\uDBFF][\uDC00-\uDFFF])+)')
         self.isurl = re.compile(r'[a-z][a-z][.][a-z][a-z]').search
-        self.joints = re.compile(r'(^[A-Za-z][A-Za-z]+)[.]([A-Za-z][A-Za-z]+$)')
+        self.joints = re.compile(r'(^[A-Za-z][A-Za-z]+)[.]'
+                                 r'([A-Za-z][A-Za-z]+$)')
         self.upunkt = re.compile(r'[.,\\!@#$%^&\'*()_+={\[}\]|";:<>?`~/]')
 
     def unmask_htag_uref(self, text):
@@ -153,7 +155,7 @@ class BaseTokenizer(object):
             is_url = False
             if (token.startswith('http://') or
                 token.startswith('https://') or
-                token.startswith('www.')):
+                    token.startswith('www.')):
                 is_url = True
             elif self.isurl(token):
                 tokens = self.upunkt.split(token)
