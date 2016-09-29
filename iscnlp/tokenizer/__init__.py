@@ -27,7 +27,7 @@ def parse_args(args):
     prog = 'isc-tokenizer'
     description = 'Tokenizer for Indian Scripts'
     languages = '''hin urd ben asm guj mal pan tel tam kan ori mar
-                nep bod kok kas eng'''.split()
+                nep bod kok kas eng spa'''.split()
     lang_help = 'select language (3 letter ISO-639 code) {%s}' % (
                 ', '.join(languages))
     # parse command line arguments
@@ -49,6 +49,12 @@ def parse_args(args):
                         action='store_true',
                         help='set this flag to apply'
                              ' sentence segmentation')
+    parser.add_argument('-t',
+                        '--twitter-data',
+                        dest='tweets',
+                        action='store_true',
+                        help='set this flag if the'
+                             ' input file contains tweets')
     parser.add_argument('-o',
                         '--output',
                         metavar='',
@@ -60,7 +66,7 @@ def parse_args(args):
                         metavar='',
                         dest='lang',
                         choices=languages,
-                        default='hin',
+                        default='eng',
                         help=lang_help)
     args = parser.parse_args(args)
     return args
@@ -68,7 +74,7 @@ def parse_args(args):
 
 def get_file_pointers(args):
     if args.infile:
-        ifp = io.open(args.infile, encoding='utf-8', errors='replace')
+        ifp = io.open(args.infile, encoding='utf-8')
     else:
         if sys.version_info[0] >= 3:
             ifp = codecs.getreader('utf8')(sys.stdin.buffer)
@@ -89,7 +95,9 @@ def process_args(args):
     ifp, ofp = get_file_pointers(args)
 
     # initialize tokenizer
-    tok = Tokenizer(lang=args.lang, split_sen=args.split_sen)
+    tok = Tokenizer(lang=args.lang,
+                    tweets=args.tweets,
+                    split_sen=args.split_sen)
 
     # tokenize
     for line in ifp:
