@@ -44,6 +44,10 @@ Install
 
     >>> from __future__ import unicode_literals
     >>> from iscnlp import Tokenizer
+    >>> tok = Tokenizer(lang='eng', tweets=True)
+    >>> text = "RT @BJP_RSS Crack down on Black money.India slides to 75th slot on Swiss bank money list #ModiForeignAchievements @RituRathaur https://t.c…"
+    >>> tk.tokenize(text)
+    ['RT', '@BJP_RSS', 'Crack', 'down', 'on', 'Black', 'money', '.', 'India', 'slides', 'to', '75th', 'slot', 'on', 'Swiss', 'bank', 'money', 'list', '#ModiForeignAchievements', '@RituRathaur', 'https://t.c…']
     >>> tk = Tokenizer(lang='hin')
     >>> tk.tokenize("22 साल के लंबे इंतजार के बाद आखिरकार हॉलीवुड स्टार लियोनार्डो डिकैप्रियो को अपनी पहली ऑस्कर ट्रॉफी"
     ...             " मिल चुकी है। उन्हें ये अवॉर्ड अपनी फिल्म ‘द रेवेनेंट’ में ह्यूज ग्लास के किरदार के लिए मिला, लेकिन उनके"
@@ -73,6 +77,7 @@ Tokenizer can also be called from Command Line Interface.
       -i , --input            <input-file>
       -s, --split-sentences   set this flag to apply sentence segmentation
       -o , --output           <output-file>
+      -t, --twitter-data      set this flag if the input file contains tweets
       -l , --language         select language (3 letter ISO-639 code) {hin, urd,
                               ben, asm, guj, mal, pan, tel, tam, kan, ori, mar, nep,
                               bod, kok, kas, eng}
