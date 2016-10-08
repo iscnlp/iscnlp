@@ -86,6 +86,8 @@ def process_args(args):
     # parse
     for line in ifp:
         line = line.split()
+        if not line:
+            continue
         tree = parser.parse(line)
         ofp.write('%s\n\n' % '\n'.join(['\t'.join(x) for x in tree]))
 

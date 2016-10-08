@@ -85,6 +85,8 @@ def process_args(args):
     # tag
     for line in ifp:
         line = line.split()
+        if not line:
+            continue
         wtags = tagger.tag(line)
         ofp.write('%s\n\n' % '\n'.join(['\t'.join(wt) for wt in wtags]))
 
