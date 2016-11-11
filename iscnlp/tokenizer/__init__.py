@@ -97,7 +97,8 @@ def process_args(args):
     # initialize tokenizer
     tok = Tokenizer(lang=args.lang,
                     tweets=args.tweets,
-                    split_sen=args.split_sen)
+                    split_sen=args.split_sen,
+                    from_file=True)
 
     # tokenize
     for line in ifp:
