@@ -11,6 +11,8 @@ This package has been moved to https://bitbucket.org/iscnlp/. Please download it
 
 ----
 
+|travis| |CircleCI| |coverage|
+
 .. |travis| image:: https://travis-ci.org/iscnlp/iscnlp.svg?branch=master
    :target: https://travis-ci.org/iscnlp/iscnlp
    :alt: travis-ci build status
