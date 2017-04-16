@@ -15,11 +15,7 @@ class ArcEager(object):
         s0N = config.nodes[s0]
         config.nodes[b0] = config.nodes[b0]._replace(pparent=s0N.id,
                                                      pdrel=label)
-        if b0 < s0:
-            config.nodes[s0] = config.nodes[s0]._replace(
-                                        left=config.nodes[s0].left + [b0])
-        else:
-            config.nodes[s0] = config.nodes[s0]._replace(
+        config.nodes[s0] = config.nodes[s0]._replace(
                                         right=config.nodes[s0].right + [b0])
         config.stack.append(b0)
         config.b0 = b0 + 1
@@ -31,12 +27,8 @@ class ArcEager(object):
         b0N = config.nodes[b0]
         config.nodes[s0] = config.nodes[s0]._replace(pparent=b0N.id,
                                                      pdrel=label)
-        if s0 < b0:
-            config.nodes[b0] = config.nodes[b0]._replace(
+        config.nodes[b0] = config.nodes[b0]._replace(
                                         left=config.nodes[b0].left + [s0])
-        else:
-            config.nodes[b0] = config.nodes[b0]._replace(
-                                        right=config.nodes[b0].right + [s0])
 
     def REDUCE(self, config, label=None):
         """pops the top of the stack if it has got its head."""
